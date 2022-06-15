@@ -4,31 +4,20 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 
-class CurrencyModel(models.Model):
-    """
-        stores currency passed in JSON file.
-    """
-    class Meta:
-        verbose_name = "Currency"
-        verbose_name_plural = "Currencies"
-
-    currency = models.CharField(max_length=10, primary_key=True)
-
-    def __str__(self) -> str:
-        return self.currency
-
-
-class MappingModel(models.Model):
+class CurrencySettings(models.Model):
     """
         maps objects of JSON file to the database with currency.
     """
     class Meta:
-        verbose_name_plural = "Mapped Data"
+        verbose_name_plural = "Currency Settings"
 
-    currency = models.ForeignKey(to=CurrencyModel, on_delete=models.CASCADE)
-    depo = models.DecimalField(max_digits=11, decimal_places=8, default=0.0, null=True)
-    vol_offset = models.DecimalField(max_digits=11, decimal_places=8, default=0.0, null=True)
-    FTX_feed_ticker = models.CharField(max_length=50, blank=True)
+    currency = models.CharField(max_length=10, primary_key=True)
+    depo = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
+    vol_offset = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
+    ftx_feed_ticker = models.CharField(max_length=50, blank=True)
+
+    def __str__(self) -> str:
+        return self.currency
 
 
 @receiver(signal=post_save, sender=User)

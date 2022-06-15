@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,10 +52,7 @@ JAZZMIN_SETTINGS = {
         {"model": "auth.User"},
 
         # Add Mapping model to Navbar
-        {"model": "map_to_db.MappingModel"},
-
-        # Add Currency model to Navbar
-        {"model": "map_to_db.CurrencyModel"},   
+        {"model": "map_to_db.currencysettings"}
     ],
     "custom_css": "/css/custom.css",
     "custom_js": "/js/main.js",
@@ -86,23 +83,24 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 # Database
 
 # For local
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 # For Production
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'dpexmem_db',
-#         'USER': 'dpexmem',
-#         'HOST': 'localhost',
-#         'PASSWORD': 'dpexmem1'
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mapper',
+        'USER': 'new_user',
+        'PORT': '5432',
+        'HOST': 'localhost',
+        'PASSWORD': 'kurt@123'
+    }
+}
 
 
 # Password validation
