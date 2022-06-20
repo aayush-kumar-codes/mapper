@@ -105,10 +105,10 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'panel',
-        'USER': 'postgres',
-        'PASSWORD': 'Hsbc1234!',
-        'HOST': 'compareprice.clavwcjswmuy.eu-central-1.rds.amazonaws.com'
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST')
     }
 }
 
