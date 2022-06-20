@@ -1,5 +1,6 @@
 from uuid import uuid4
 import ccxt, requests
+from django.conf import settings
 from django.http import JsonResponse
 from .models import Funding
 import pandas as pd
@@ -21,9 +22,9 @@ def GetFunding(request):
 
 def GetTrofiToken(request):
     response = requests.get(
-            url="https://api.trofi.group/user/earn/earn-public?detailType=flexible",
+            url=settings.TROFI_URL,
             headers={
-                "trofi-secret": "832bf965e131x9"
+                "trofi-secret": settings.TROFI_SECRET
             }
         )
 

@@ -14,13 +14,7 @@ class DataPointsSerializer(serializers.ModelSerializer):
 
     def get_data_points(self, obj):
         days = self.context['day']
-        # dataframe = self.context['dataframe']
-        # symbol_filter = (dataframe["token.symbol"] == obj.future)
-        # flex = dataframe.loc[symbol_filter, "apy"]
-        # try:
-        #     flex = flex.values[0]
-        # except IndexError:
-        #     flex = "NA"
+
         tokens = TrofiTokens.objects.all()
         apy = tokens.filter(symbol=obj.future)
         try:

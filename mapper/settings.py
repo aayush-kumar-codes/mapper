@@ -93,15 +93,6 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 
 # Database
 
-# For local
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
-
-# For Production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -112,6 +103,8 @@ DATABASES = {
     }
 }
 
+TROFI_URL=os.getenv('TROFI_URL')
+TROFI_SECRET=os.getenv('TROFI_SECRET')
 
 # Password validation
 
