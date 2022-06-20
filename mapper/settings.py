@@ -102,37 +102,15 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 # }
 
 # For Production
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'mapper',
-#         'USER': 'new_user',
-#         'PORT': '5432',
-#         'HOST': 'localhost',
-#         'PASSWORD': 'kurt@123'
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'panel',
         'USER': 'postgres',
-        'PORT': '5432',
-        'HOST': 'localhost',
-        'PASSWORD': 'Java@123'
+        'PASSWORD': 'Hsbc1234!',
+        'HOST': 'compareprice.clavwcjswmuy.eu-central-1.rds.amazonaws.com'
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'panel',
-#         'USER': 'postgres',
-#         'PASSWORD': 'Hsbc1234!',
-#         'HOST': 'compareprice.clavwcjswmuy.eu-central-1.rds.amazonaws.com'
-#     }
-# }
 
 
 # Password validation
