@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # apps
-    'map_to_db'
+    'map_to_db',
+    'funding',
+    'settings'
 ]
 
 MIDDLEWARE = [
@@ -56,15 +58,24 @@ JAZZMIN_SETTINGS = {
     ],
     "custom_css": "/css/custom.css",
     "custom_js": "/js/main.js",
-    "site_brand": "Administrator Panel"
+    "site_brand": "Administrator Panel",
+    "custom_links": {
+        "funding": [{
+            "name": "Data Points", 
+            "url": "/admin/funding/fundingproxy/data-points/", 
+            "icon": "nav-icon fas fa-circle",
+        }]
+    },
 }
 
 ROOT_URLCONF = 'mapper.urls'
 
+SITE_ID=1
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,24 +94,45 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 # Database
 
 # For local
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
-#}
+# }
 
 # For Production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'mapper',
+#         'USER': 'new_user',
+#         'PORT': '5432',
+#         'HOST': 'localhost',
+#         'PASSWORD': 'kurt@123'
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mapper',
-        'USER': 'new_user',
+        'NAME': 'panel',
+        'USER': 'postgres',
         'PORT': '5432',
         'HOST': 'localhost',
-        'PASSWORD': 'kurt@123'
+        'PASSWORD': 'Java@123'
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'panel',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Hsbc1234!',
+#         'HOST': 'compareprice.clavwcjswmuy.eu-central-1.rds.amazonaws.com'
+#     }
+# }
 
 
 # Password validation
