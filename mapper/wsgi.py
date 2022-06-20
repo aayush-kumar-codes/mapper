@@ -15,4 +15,4 @@ from funding.utils import Cronjob
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mapper.settings')
 
 application = get_wsgi_application()
-# Cronjob()
+Cronjob()
