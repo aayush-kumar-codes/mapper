@@ -59,6 +59,7 @@ class HistoryFilter(admin.SimpleListFilter):
 class FundingAdmin(admin.ModelAdmin):
     list_display = ['future', 'rate', 'time']
     list_filter = ['future', HistoryFilter]
+    ordering = ['time']
 
 
 class DataPointsAdmin(admin.ModelAdmin):
@@ -76,9 +77,11 @@ class DataPointsAdmin(admin.ModelAdmin):
         serialized_data = DataPointsSerializer(funding_future, many=True, context={"day": list_of_days, "dataframe": ""})
         return render(request=request, template_name='admin/funding/fundingproxy/data_points_list.html', context={"content_title": "Funding Data Points", "data_points": serialized_data.data, "days": list_of_days})
 
+class TrofiTokensAdmin(admin.ModelAdmin):
+    list_display = ['symbol', 'is_active']
 
 
 admin.site.register(Funding, FundingAdmin)
 admin.site.register(FundingProxy, DataPointsAdmin)
-admin.site.register(TrofiTokens)
+admin.site.register(TrofiTokens, TrofiTokensAdmin)
 admin.site.register(Future)

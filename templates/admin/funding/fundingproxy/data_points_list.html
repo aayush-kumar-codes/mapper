@@ -13,7 +13,7 @@
     <!--  Prevent admin panel being crawled by search engines -->
     <meta name="robots" content="none, noarchive">
 
-    <title>Funding Data Points</title>
+    <title>Funding Table</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{% static "vendor/fontawesome-free/css/all.min.css" %}">
@@ -206,7 +206,7 @@
                                             <tr>
                                                 <th>{{ data.data_points.future }}</th>
                                                 {% for item in data.data_points.total_rate_list %}
-                                                    <td>{{ item|floatformat:6 }}</td>
+                                                    <td>{{ item|floatformat:2 }}</td>
                                                 {% endfor %}
                                                 <td>{{ data.data_points.flex }}</td>
                                             </tr>

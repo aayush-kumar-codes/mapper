@@ -25,7 +25,7 @@ class DataPointsSerializer(serializers.ModelSerializer):
         except IndexError:
             data = {
                 "future": obj.future,
-                "flex": "NA"
+                "flex": ""
             }
         total_rate_list = []
         for day in days:
