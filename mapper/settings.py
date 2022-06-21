@@ -61,7 +61,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Administrator Panel",
     "custom_links": {
         "funding": [{
-            "name": "Data Points", 
+            "name": "Funding Table", 
             "url": "/admin/funding/fundingproxy/data-points/", 
             "icon": "nav-icon fas fa-circle",
         }]
