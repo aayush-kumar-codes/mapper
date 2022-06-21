@@ -43,8 +43,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-DJANGO_SETTINGS_MODULE='mapper.settings'
-
 # Theme settings
 JAZZMIN_SETTINGS = {
     "topmenu_links": [
@@ -98,9 +96,9 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'panel',
-        'USER': 'postgres',
-        'PASSWORD': 'Hsbc1234!',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
         'HOST': os.getenv('HOST')
     }
 }
