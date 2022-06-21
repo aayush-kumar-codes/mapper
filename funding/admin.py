@@ -68,8 +68,11 @@ class DataPointsAdmin(admin.ModelAdmin):
         return new_urls + urls
 
     def get_data_points(self, request):
-        list_of_days = Settings.objects.first().days
-        funding_future = Future.objects.all()
+        try:
+            list_of_days = Settings.objects.first().days
+        except:
+            list_of_days = [1]
+        funding_future = Future.objects.all().distinct()
         serialized_data = DataPointsSerializer(funding_future, many=True, context={"day": list_of_days, "dataframe": ""})
         return render(request=request, template_name='admin/funding/fundingproxy/data_points_list.html', context={"content_title": "Funding Data Points", "data_points": serialized_data.data, "days": list_of_days})
 

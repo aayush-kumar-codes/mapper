@@ -12,10 +12,5 @@ class Settings(models.Model):
         size=8, null=True, blank=True
     )
 
-    def save(self, *args, **kwargs):
-        if not self.pk and Settings.objects.exists():
-            raise ValidationError('There is can be only one Settings instance')
-        return super(Settings, self).save(*args, **kwargs)
-
     def __str__(self) -> str:
         return "Settings"
