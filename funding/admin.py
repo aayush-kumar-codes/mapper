@@ -73,9 +73,10 @@ class DataPointsAdmin(admin.ModelAdmin):
             list_of_days = Settings.objects.first().days
         except:
             list_of_days = [1]
-        funding_future = Future.objects.all().distinct()
+        funding_future = Future.objects.all().distinct().order_by('future')
         serialized_data = DataPointsSerializer(funding_future, many=True, context={"day": list_of_days, "dataframe": ""})
-        return render(request=request, template_name='admin/funding/fundingproxy/data_points_list.html', context={"content_title": "Funding Table", "data_points": serialized_data.data, "days": list_of_days})
+        serialized_data = sorted(serialized_data.data, key=lambda n: float(n['data_points']['flex']) if n['data_points']['flex'] != '' else float(10000))
+        return render(request=request, template_name='admin/funding/fundingproxy/data_points_list.html', context={"content_title": "Funding Table", "data_points": serialized_data, "days": list_of_days})
 
 class TrofiTokensAdmin(admin.ModelAdmin):
     list_display = ['symbol', 'is_active']
