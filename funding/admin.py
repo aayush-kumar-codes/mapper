@@ -59,7 +59,7 @@ class HistoryFilter(admin.SimpleListFilter):
 class FundingAdmin(admin.ModelAdmin):
     list_display = ['future', 'rate', 'time']
     list_filter = ['future', HistoryFilter]
-    ordering = ['time']
+    ordering = ['-time']
 
 
 class DataPointsAdmin(admin.ModelAdmin):
