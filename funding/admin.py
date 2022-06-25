@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 from settings.models import Settings
 
-from .models import Funding, FundingProxy, Future, TrofiTokens
+from .models import FundingRecord, Future, TrofiTokens, FundingBase
 from django.urls import path
 
 from .serializers import DataPointsSerializer
@@ -76,13 +76,13 @@ class DataPointsAdmin(admin.ModelAdmin):
         funding_future = Future.objects.all().distinct().order_by('future')
         serialized_data = DataPointsSerializer(funding_future, many=True, context={"day": list_of_days, "dataframe": ""})
         serialized_data = sorted(serialized_data.data, key=lambda n: float(n['data_points']['flex']) if n['data_points']['flex'] != '' else float(10000))
-        return render(request=request, template_name='admin/funding/fundingproxy/data_points_list.html', context={"content_title": "Funding Table", "data_points": serialized_data, "days": list_of_days})
+        return render(request=request, template_name='admin/funding/fundingrecord/data_points_list.html', context={"content_title": "Funding Table", "data_points": serialized_data, "days": list_of_days})
 
 class TrofiTokensAdmin(admin.ModelAdmin):
     list_display = ['symbol', 'is_active']
 
 
-admin.site.register(Funding, FundingAdmin)
-admin.site.register(FundingProxy, DataPointsAdmin)
+# admin.site.register(FundingBase, FundingAdmin)
+admin.site.register(FundingRecord, DataPointsAdmin)
 admin.site.register(TrofiTokens, TrofiTokensAdmin)
 admin.site.register(Future)

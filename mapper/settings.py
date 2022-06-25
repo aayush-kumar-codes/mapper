@@ -62,7 +62,7 @@ JAZZMIN_SETTINGS = {
     "custom_links": {
         "funding": [{
             "name": "Funding Table", 
-            "url": "/admin/funding/fundingproxy/data-points/", 
+            "url": "/admin/funding/fundingrecord/data-points/", 
             "icon": "nav-icon fas fa-circle",
         }]
     },
@@ -99,8 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
-        'PASSWORD': 'Hsbc1234!',
-        'HOST': os.getenv('HOST')
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost'
     }
 }
 

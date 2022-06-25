@@ -6,7 +6,7 @@ class Future(models.Model):
     def __str__(self) -> str:
         return self.future
 
-class Funding(models.Model):
+class FundingBase(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     future = models.ForeignKey(to=Future, on_delete=models.CASCADE)
     rate = models.DecimalField(max_digits=10, decimal_places=6)
@@ -15,8 +15,9 @@ class Funding(models.Model):
     def __str__(self) -> str:
         return self.future.future
 
-class FundingProxy(Funding):
+class FundingRecord(FundingBase):
     class Meta:
+        verbose_name_plural = 'Funding Record'
         proxy=True
 
 
