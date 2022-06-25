@@ -2,7 +2,7 @@ from uuid import uuid4
 import ccxt, requests
 from django.conf import settings
 from django.http import JsonResponse
-from .models import Funding
+from .models import FundingBase
 import pandas as pd
 from .models import TrofiTokens
 
@@ -14,9 +14,9 @@ def GetFunding(request):
     result = funding['result']
     results = []
 
-    results = [Funding(future=item['future'].replace("-PERP", ""), rate=item['rate'], time=item['time']) for item in result]
+    results = [FundingBase(future=item['future'].replace("-PERP", ""), rate=item['rate'], time=item['time']) for item in result]
 
-    Funding.objects.bulk_create(results)    
+    FundingBase.objects.bulk_create(results)    
 
     return JsonResponse({})
 

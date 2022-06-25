@@ -2,7 +2,7 @@ from django.db import IntegrityError
 import ccxt
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils.timezone import get_current_timezone
-from .models import Funding, Future
+from .models import FundingBase, Future
 from uuid import uuid4
 
 def get_funding():
@@ -15,14 +15,14 @@ def get_funding():
 
         try:
             future_name = Future.objects.create(future=future)
-            funding_data = Funding(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+            funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
             results.append(funding_data)
         except IntegrityError as error:
             future_name = Future.objects.get(future=future)
-            funding_data = Funding(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+            funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
             results.append(funding_data)
 
-    Funding.objects.bulk_create(results)    
+    FundingBase.objects.bulk_create(results)    
 
 
 def Cronjob():
