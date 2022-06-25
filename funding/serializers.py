@@ -28,10 +28,11 @@ class DataPointsSerializer(serializers.ModelSerializer):
             }
         total_rate_list = []
         for day in days:
+            # Get all the fundings of day passed in array
             calculated_time = datetime.now() - timedelta(days=day)
             total_rate = FundingBase.objects.filter(time__gte=calculated_time, future=obj.future).aggregate(Sum('rate'))
             try:
-                total_rate_list.append((total_rate['rate__sum'] * 365 * 24 * 100))
+                total_rate_list.append(((total_rate['rate__sum'] / 24) * 365 * 24 * 100))
             except TypeError:
                 total_rate_list.append("NA")
         data["total_rate_list"] = total_rate_list

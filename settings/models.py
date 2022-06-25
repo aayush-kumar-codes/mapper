@@ -9,8 +9,10 @@ class Settings(models.Model):
 
     days = ArrayField(
         models.PositiveIntegerField(blank=True),
-        size=8, null=True, blank=True
+        size=8, null=True, blank=True, verbose_name='Funding Days (array)'
     )
+
+    futures_expiry_code = models.CharField(max_length=10, null=True, blank=True, verbose_name='Futures Expiry Code (for implied rate calculation. e.g. 0930')
 
     def __str__(self) -> str:
         return "Settings"

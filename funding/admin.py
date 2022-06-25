@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 from settings.models import Settings
 
-from .models import FundingRecord, Future, TrofiTokens, FundingBase
+from .models import FundingRecord, Future, TrofiTokens
 from django.urls import path
 
 from .serializers import DataPointsSerializer
@@ -81,4 +81,3 @@ class TrofiTokensAdmin(admin.ModelAdmin):
 
 admin.site.register(FundingRecord, DataPointsAdmin)
 admin.site.register(TrofiTokens, TrofiTokensAdmin)
-admin.site.register(Future)
