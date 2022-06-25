@@ -1,9 +1,11 @@
 import ccxt
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils.timezone import get_current_timezone
+import pytz
 from .models import FundingBase, Future
 from uuid import uuid4
 from datetime import datetime, timedelta
+from django.conf import settings
 
 def get_funding():
     ftx = ccxt.ftx()
@@ -15,7 +17,7 @@ def get_funding():
 
         try:
             future_name = Future.objects.get(future=future)
-            funding_base = FundingBase.objects.filter(future=future_name, time=item['time'])
+            funding_base = FundingBase.objects.filter(future=future_name, time=datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone(settings.TIME_ZONE)))
             if not funding_base.exists():
                 funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
                 results.append(funding_data)

@@ -29,7 +29,7 @@ class DataPointsSerializer(serializers.ModelSerializer):
         total_rate_list = []
         for day in days:
             # Get all the fundings of day passed in array
-            calculated_time = datetime.now() - timedelta(days=day)
+            # calculated_time = datetime.now() - timedelta(days=day)
             # total_rate = FundingBase.objects.filter(time__gte=calculated_time, future=obj.future).aggregate(Sum('rate'))
             try:
                 fundings = FundingBase.objects.filter(future=obj.future).order_by('-time')
