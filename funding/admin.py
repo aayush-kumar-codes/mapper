@@ -56,13 +56,10 @@ class HistoryFilter(admin.SimpleListFilter):
             return queryset.filter(time__gt=last_5_year, time__lte=datetime.now())
 
 
-class FundingAdmin(admin.ModelAdmin):
+class DataPointsAdmin(admin.ModelAdmin):
     list_display = ['future', 'rate', 'time']
     list_filter = ['future', HistoryFilter]
     ordering = ['-time']
-
-
-class DataPointsAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         new_urls = [path('data-points/', self.get_data_points)]
@@ -82,7 +79,6 @@ class TrofiTokensAdmin(admin.ModelAdmin):
     list_display = ['symbol', 'is_active']
 
 
-# admin.site.register(FundingBase, FundingAdmin)
 admin.site.register(FundingRecord, DataPointsAdmin)
 admin.site.register(TrofiTokens, TrofiTokensAdmin)
 admin.site.register(Future)
