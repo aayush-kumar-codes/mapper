@@ -9,7 +9,8 @@ class CurrencySettings(models.Model):
         maps objects of JSON file to the database with currency.
     """
     class Meta:
-        verbose_name_plural = "Currency Settings"
+        verbose_name = 'Options Setting'
+        verbose_name_plural = 'Options Setting'
 
     currency = models.CharField(max_length=10, primary_key=True)
     depo = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
