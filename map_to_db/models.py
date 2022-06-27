@@ -13,8 +13,8 @@ class CurrencySettings(models.Model):
         verbose_name_plural = 'Options Setting'
 
     currency = models.CharField(max_length=10, primary_key=True)
-    depo = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
-    vol_offset = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
+    depo = models.FloatField(null=True, blank=True)
+    vol_offset = models.FloatField(null=True, blank=True)
     ftx_feed_ticker = models.CharField(max_length=50, blank=True)
 
     def save(self, *args, **kwargs) -> None:
