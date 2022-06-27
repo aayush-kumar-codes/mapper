@@ -5,9 +5,13 @@ import pytz
 from .models import FundingBase, Future
 from uuid import uuid4
 from datetime import datetime, timedelta
-from django.conf import settings
+import logging
+
+
+
 
 def get_funding():
+    logging.basicConfig(level=logging.DEBUG, filename=f"logs/{str(datetime.now().date()) + str(datetime.now().time()).replace(':', '-')}.log", filemode="w", format="%(asctime)s - %(levelname)s - %(message)s")
     ftx = ccxt.ftx()
     funding = ftx.publicGetFundingRates()
     result = funding['result']
@@ -18,13 +22,17 @@ def get_funding():
         try:
             future_name = Future.objects.get(future=future)
             funding_base = FundingBase.objects.filter(future=future_name, time=item['time'])
+            logging.debug(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             if not funding_base.exists():
+                logging.debug("Inside ")
                 funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
                 results.append(funding_data)
         except Future.DoesNotExist:
+            logging.exception(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             future_name = Future.objects.create(future=future)
             funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
             results.append(funding_data)
+        logging.debug(f"RESULTS: {results}")
 
     FundingBase.objects.bulk_create(results)    
 
