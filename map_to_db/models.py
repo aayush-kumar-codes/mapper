@@ -17,6 +17,14 @@ class CurrencySettings(models.Model):
     vol_offset = models.DecimalField(max_digits=11, decimal_places=8, null=True, blank=True)
     ftx_feed_ticker = models.CharField(max_length=50, blank=True)
 
+    def save(self, *args, **kwargs) -> None:
+        if self.depo:
+            self.depo = round(self.depo, 4)
+        if self.vol_offset:
+            self.vol_offset = round(self.vol_offset, 4)
+        
+        super(CurrencySettings, self).save(*args, **kwargs)
+
     def __str__(self) -> str:
         return self.currency
 

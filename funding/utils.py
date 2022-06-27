@@ -38,5 +38,5 @@ def remove_funding_before_60_days():
 def Cronjob():
     scheduler = BackgroundScheduler(timezone=str(get_current_timezone()))
     scheduler.add_job(get_funding, trigger='interval', seconds=3600)
-    scheduler.add_job(remove_funding_before_60_days, trigger='interval', days=1)
+    scheduler.add_job(remove_funding_before_60_days, trigger='interval', hours=2)
     scheduler.start()
