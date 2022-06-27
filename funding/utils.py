@@ -17,7 +17,7 @@ def get_funding():
 
         try:
             future_name = Future.objects.get(future=future)
-            funding_base = FundingBase.objects.filter(future=future_name, time=datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone(settings.TIME_ZONE)))
+            funding_base = FundingBase.objects.filter(future=future_name, time=datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone('UTC')))
             if not funding_base.exists():
                 funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
                 results.append(funding_data)

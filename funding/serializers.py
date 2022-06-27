@@ -38,10 +38,7 @@ class DataPointsSerializer(serializers.ModelSerializer):
             
             try:
                 rate = (total_rate['rate__sum'] / 24) * 365 * 24 * 100
-                if rate == 0:
-                    total_rate_list.append(rate)
-                else:
-                    total_rate_list.append(-(rate))
+                total_rate_list.append(rate)
             except TypeError:
                 total_rate_list.append("")
         data["total_rate_list"] = total_rate_list
