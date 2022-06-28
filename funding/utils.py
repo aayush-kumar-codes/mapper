@@ -11,28 +11,23 @@ from datetime import datetime, timedelta
 
 
 def get_funding():
-    count = 0
     new_time = datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')
     new_time = datetime.strptime(new_time, '%Y-%m-%dT%H:%M:%S').astimezone(pytz.timezone('UTC'))
     cron_setting = CRON.objects.all()
     if cron_setting:
-        cron_hour = cron_setting.first().hour
-        if cron_hour == new_time.hour:
+        cron_hour = cron_setting.first()
+        if cron_hour.hour == new_time.hour:
             return
         else:
-            cron_setting.first().hour = new_time.hour
-            cron_setting.first().save()
+            cron_hour.hour = new_time.hour
+            cron_hour.save()
     else:
         CRON.objects.create(hour=new_time.hour)
     ftx = ccxt.ftx()
     funding = ftx.publicGetFundingRates()
     result = funding['result']
-
+    results = []
     for item in result:
-        count += 1
-
-        if count == 20:
-            sleep(3)
 
         future = item['future'].replace("-PERP", "")
         item_time = datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone('UTC'))
@@ -42,10 +37,14 @@ def get_funding():
         else:
             try:
                 future_name = Future.objects.get(future=future)
-                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+                results.append(funding_data)
             except Future.DoesNotExist:
                 future_name = Future.objects.create(future=future)
-                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+                results.append(funding_data)
+
+    FundingBase.objects.bulk_create(results)
 
 
 
@@ -58,6 +57,6 @@ def remove_funding_before_60_days():
 
 def Cronjob():
     scheduler = BackgroundScheduler(timezone=str(get_current_timezone()))
-    scheduler.add_job(get_funding, trigger='interval', hours=1, minutes=2)
+    scheduler.add_job(get_funding, trigger='interval', minutes=1)
     scheduler.add_job(remove_funding_before_60_days, trigger='interval', hours=24)
     scheduler.start()
