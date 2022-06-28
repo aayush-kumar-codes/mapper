@@ -11,9 +11,6 @@ from datetime import datetime, timedelta
 
 
 def get_funding():
-    ftx = ccxt.ftx()
-    funding = ftx.publicGetFundingRates()
-    result = funding['result']
     count = 0
     new_time = datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')
     new_time = datetime.strptime(new_time, '%Y-%m-%dT%H:%M:%S').astimezone(pytz.timezone('UTC'))
@@ -27,6 +24,9 @@ def get_funding():
             cron_setting.first().save()
     else:
         CRON.objects.create(hour=new_time.hour)
+    ftx = ccxt.ftx()
+    funding = ftx.publicGetFundingRates()
+    result = funding['result']
 
     for item in result:
         count += 1
@@ -58,6 +58,6 @@ def remove_funding_before_60_days():
 
 def Cronjob():
     scheduler = BackgroundScheduler(timezone=str(get_current_timezone()))
-    scheduler.add_job(get_funding, trigger='interval', minutes=3, seconds=10)
+    scheduler.add_job(get_funding, trigger='interval', hours=1, minutes=2)
     scheduler.add_job(remove_funding_before_60_days, trigger='interval', hours=24)
     scheduler.start()
