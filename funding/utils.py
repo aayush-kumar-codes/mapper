@@ -26,18 +26,18 @@ def get_funding():
             logging.debug(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             if not funding_base.exists():
                 logging.debug("Inside ")
-                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
-                # results.append(funding_data)
+                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+                results.append(funding_data)
         except Future.DoesNotExist:
             logging.exception(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             future_name = Future.objects.create(future=future)
             funding_base = FundingBase.objects.filter(future__future=future_name, time=item['time'])
             if not funding_base.exists():
-                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
-            # results.append(funding_data)
-        sleep(2)
+                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+                results.append(funding_data)
 
-    # FundingBase.objects.bulk_create(results)    
+    FundingBase.objects.bulk_create(results)
+
 
 
 def remove_funding_before_60_days():
@@ -48,6 +48,6 @@ def remove_funding_before_60_days():
 
 def Cronjob():
     scheduler = BackgroundScheduler(timezone=str(get_current_timezone()))
-    scheduler.add_job(get_funding, trigger='interval', seconds=600)
+    scheduler.add_job(get_funding, trigger='interval', seconds=1800)
     scheduler.add_job(remove_funding_before_60_days, trigger='interval', hours=24)
     scheduler.start()
