@@ -1,3 +1,4 @@
+from time import sleep
 import ccxt
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils.timezone import get_current_timezone
@@ -13,26 +14,28 @@ def get_funding():
     ftx = ccxt.ftx()
     funding = ftx.publicGetFundingRates()
     result = funding['result']
-    results = []
+    count = 0
     for item in result:
+        count += 1
+
+        if count == 20:
+            sleep(3)
+
         future = item['future'].replace("-PERP", "")
         item_time = datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone('UTC'))
         new_time = datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')
         new_time = datetime.strptime(new_time, '%Y-%m-%dT%H:%M:%S').astimezone(pytz.timezone('UTC'))
 
         if ((new_time.date() != item_time.date()) or (new_time.hour != item_time.hour)):
-            continue
+            pass
+        else:
+            try:
+                future_name = Future.objects.get(future=future)
+                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+            except Future.DoesNotExist:
+                future_name = Future.objects.create(future=future)
+                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
 
-        try:
-            future_name = Future.objects.get(future=future)
-            funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
-            results.append(funding_data)
-        except Future.DoesNotExist:
-            future_name = Future.objects.create(future=future)
-            funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
-            results.append(funding_data)
-
-    FundingBase.objects.bulk_create(results)
 
 
 
@@ -44,6 +47,6 @@ def remove_funding_before_60_days():
 
 def Cronjob():
     scheduler = BackgroundScheduler(timezone=str(get_current_timezone()))
-    scheduler.add_job(get_funding, trigger='interval', seconds=3610)
+    scheduler.add_job(get_funding, trigger='interval', minutes=5)
     scheduler.add_job(remove_funding_before_60_days, trigger='interval', hours=24)
     scheduler.start()
