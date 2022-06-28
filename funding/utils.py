@@ -21,7 +21,7 @@ def get_funding():
 
         try:
             future_name = Future.objects.get(future=future)
-            funding_base = FundingBase.objects.filter(future=future_name, time=item['time'])
+            funding_base = FundingBase.objects.filter(future__future=future_name, time=item['time'])
             logging.debug(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             if not funding_base.exists():
                 logging.debug("Inside ")
@@ -30,7 +30,9 @@ def get_funding():
         except Future.DoesNotExist:
             logging.exception(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             future_name = Future.objects.create(future=future)
-            funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
+            funding_base = FundingBase.objects.filter(future__future=future_name, time=item['time'])
+            if not funding_base.exists():
+                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
             results.append(funding_data)
         logging.debug(f"RESULTS: {results}")
 
