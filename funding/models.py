@@ -33,3 +33,7 @@ class TrofiTokens(models.Model):
     def __str__(self) -> str:
         return self.symbol
         
+
+class CRON(models.Model):
+    hour=models.IntegerField()
+
