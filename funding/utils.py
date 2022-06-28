@@ -25,18 +25,17 @@ def get_funding():
             logging.debug(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             if not funding_base.exists():
                 logging.debug("Inside ")
-                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
-                results.append(funding_data)
+                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone('UTC')))
+                # results.append(funding_data)
         except Future.DoesNotExist:
             logging.exception(f"In try block funding_base = {funding_base}, future_name = {future_name}, time={item['time']}, funding_exists={funding_base.exists()}", exc_info=True)
             future_name = Future.objects.create(future=future)
             funding_base = FundingBase.objects.filter(future__future=future_name, time=item['time'])
             if not funding_base.exists():
-                funding_data = FundingBase(id=uuid4() , future=future_name, rate=item['rate'], time=item['time'])
-            results.append(funding_data)
-        logging.debug(f"RESULTS: {results}")
+                FundingBase.objects.create(id=uuid4() , future=future_name, rate=item['rate'], time=datetime.strptime(item['time'], '%Y-%m-%dT%H:%M:%S%z').astimezone(pytz.timezone('UTC')))
+            # results.append(funding_data)
 
-    FundingBase.objects.bulk_create(results)    
+    # FundingBase.objects.bulk_create(results)    
 
 
 def remove_funding_before_60_days():
