@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 
 def get_funding():
     ftx = ccxt.ftx()
+    print("1233333",datetime.now())
     funding = ftx.publicGetFundingRates()
     result = funding['result']
     count = 0
