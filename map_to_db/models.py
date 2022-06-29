@@ -16,6 +16,7 @@ class CurrencySettings(models.Model):
     depo = models.FloatField(null=True, blank=True)
     vol_offset = models.FloatField(null=True, blank=True)
     ftx_feed_ticker = models.CharField(max_length=50, blank=True)
+    implied_r = models.FloatField(null=True, blank=True, verbose_name="Implied R")
 
     def save(self, *args, **kwargs) -> None:
         if self.depo:
