@@ -22,19 +22,19 @@ def GetFunding(request):
     return JsonResponse({})
 
 
-def GetTrofiToken():
+def GetTrofiToken(request=None):
     response = requests.get(
             url=settings.TROFI_URL,
             headers={
                 "trofi-secret": settings.TROFI_SECRET
             }
         )
-
+    print("HGHHH",response.status_code)
     data = response.json()['flexibleEarn']
     df = pd.json_normalize(data)
     FIELDS = ["apy", "token.symbol", "is_active", "_id", "token.priority"]
     df = df[FIELDS]
-
+    print("====>",df)
     tokens_list = df.values
     trofi_token_list = []
     for token in tokens_list:
