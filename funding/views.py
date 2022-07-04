@@ -7,9 +7,10 @@ import pandas as pd
 from .models import TrofiTokens
 
 
-ftx = ccxt.ftx()
 
 def GetFunding(request):
+    ftx = ccxt.ftx()
+
     funding = ftx.publicGetFundingRates()
     result = funding['result']
     results = []
@@ -20,7 +21,8 @@ def GetFunding(request):
 
     return JsonResponse({})
 
-def GetTrofiToken(request):
+
+def GetTrofiToken():
     response = requests.get(
             url=settings.TROFI_URL,
             headers={
@@ -30,7 +32,7 @@ def GetTrofiToken(request):
 
     data = response.json()['flexibleEarn']
     df = pd.json_normalize(data)
-    FIELDS = ["apy", "token.symbol", "is_active"]
+    FIELDS = ["apy", "token.symbol", "is_active", "_id", "token.priority"]
     df = df[FIELDS]
 
     tokens_list = df.values
@@ -40,6 +42,8 @@ def GetTrofiToken(request):
         if trofi_token.exists():
             trofi_token[0].apy = token[0]
             trofi_token[0].is_active = token[2]
+            trofi_token[0].token_id = token[3]
+            trofi_token[0].priority = token[4] if str(token[4]) != "nan" else ''
             trofi_token[0].save()
         else:
             trofi_token_list.append(
@@ -47,11 +51,14 @@ def GetTrofiToken(request):
                     id=uuid4(),
                     apy=token[0],
                     symbol=token[1],
-                    is_active=token[2]
+                    is_active=token[2],
+                    token_id=token[3],
+                    priority=token[4] if str(token[4]) != "nan" else ''
                 )
             )
-    TrofiTokens.objects.bulk_create(
-        trofi_token_list
-    )
+    if len(trofi_token_list) != 0:
+        TrofiTokens.objects.bulk_create(
+            trofi_token_list
+        )
     
     return JsonResponse({"status": 200})

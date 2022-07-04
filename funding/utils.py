@@ -3,6 +3,8 @@ import ccxt
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils.timezone import get_current_timezone
 import pytz
+
+from funding.views import GetTrofiToken
 from .models import FundingBase, Future ,CRON
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -59,4 +61,5 @@ def Cronjob():
     scheduler = BackgroundScheduler(timezone=str(get_current_timezone()))
     scheduler.add_job(get_funding, trigger='interval', minutes=30)
     scheduler.add_job(remove_funding_before_60_days, trigger='interval', hours=24)
+    scheduler.add_job(GetTrofiToken, trigger='interval', hours=24)
     scheduler.start()

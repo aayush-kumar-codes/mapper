@@ -76,7 +76,7 @@ class DataPointsAdmin(admin.ModelAdmin):
         return render(request=request, template_name='admin/funding/fundingrecord/data_points_list.html', context={"content_title": "Funding Table", "data_points": serialized_data, "days": list_of_days})
 
 class TrofiTokensAdmin(admin.ModelAdmin):
-    list_display = ['symbol', 'is_active']
+    list_display = ['symbol', 'token_id', 'priority', 'is_active']
 
 
 admin.site.register(FundingRecord, DataPointsAdmin)
