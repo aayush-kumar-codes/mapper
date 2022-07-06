@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -106,6 +106,10 @@ DATABASES = {
 
 TROFI_URL=os.getenv('TROFI_URL')
 TROFI_SECRET=os.getenv('TROFI_SECRET')
+TROFI_DEV_URL=os.getenv('TROFI_DEV_URL')
+TROFI_DEV_SECRET=os.getenv('TROFI_DEV_SECRET')
+TROFI_STAGING_URL=os.getenv('TROFI_STAGING_URL')
+TROFI_STAGING_SECRET=os.getenv('TROFI_STAGING_SECRET')
 
 # Password validation
 
