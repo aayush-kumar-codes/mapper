@@ -4,7 +4,16 @@ from django.contrib.auth.models import Group
 from .models import CurrencySettings
 
 class CurrencySettingsAdmin(admin.ModelAdmin):
-    list_display = ['currency', 'depo', 'vol_offset', 'ftx_feed_ticker', 'implied_r']
+    list_display = [
+        'currency', 
+        'depo', 
+        'vol_offset', 
+        'ftx_feed_ticker', 
+        'implied_r', 
+        'spacing', 
+        'maturity_factor', 
+        'rounding'
+    ]
     list_filter = ['currency']
 
 # registering models
