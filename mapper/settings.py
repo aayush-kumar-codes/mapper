@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv("DEBUG", False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -30,7 +30,9 @@ INSTALLED_APPS = [
     # apps
     'map_to_db',
     'funding',
-    'settings'
+    'settings',
+    'funding_dev',
+    'funding_staging'
 ]
 
 MIDDLEWARE = [
@@ -95,12 +97,27 @@ WSGI_APPLICATION = 'mapper.wsgi.application'
 # Database
 
 DATABASES = {
-    'default': {
+    'default': {},
+    'prod_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
         'PASSWORD': os.getenv('PASSWORD'),
         'HOST': os.getenv('HOST')
+    },
+    'dev_db': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DEV_NAME'),
+        'USER': os.getenv('DEV_USER'),
+        'PASSWORD': os.getenv('DEV_PASSWORD'),
+        'HOST': os.getenv('DEV_HOST')
+    },
+    'staging_db': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('STAGING_NAME'),
+        'USER': os.getenv('STAGING_USER'),
+        'PASSWORD': os.getenv('STAGING_PASSWORD'),
+        'HOST': os.getenv('STAGING_HOST')
     }
 }
 
@@ -152,3 +169,5 @@ USE_TZ = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DATABASE_ROUTERS = ['routers.db_routers.ProdRouter', 'routers.db_routers.DevRouter', 'routers.db_routers.StagingRouter']

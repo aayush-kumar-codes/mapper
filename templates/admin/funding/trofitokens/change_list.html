@@ -70,13 +70,23 @@
 
                                 {% block result_list %}
                                     <div class="row">
-                                        <div class="col-12 col-sm-8">
+                                        <div class="col-12 col-sm-4">
                                             {% if action_form and actions_on_top and cl.show_admin_actions %}
                                                 {% admin_actions %}
                                             {% endif %}
                                         </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div>
+                                        <div class="col-12">
+                                            <div class="mr-4">
+                                                <a id="getStagingTokens" class="btn btn-outline-success float-right">
+                                                    <i class="fa fa-plus-circle"></i> &nbsp; Get Staging Trofi tokens
+                                                </a>
+                                            </div>
+                                            <div class="mr-4">
+                                                <a id="getDevTokens" class="btn btn-outline-success float-right">
+                                                    <i class="fa fa-plus-circle"></i> &nbsp; Get Dev Trofi tokens
+                                                </a>
+                                            </div>
+                                            <div class="mr-4">
                                                 <a id="getLiveTokens" class="btn btn-outline-success float-right">
                                                     <i class="fa fa-plus-circle"></i> &nbsp; Get Live Trofi tokens
                                                 </a>
@@ -117,6 +127,18 @@
         document.getElementById('getLiveTokens').addEventListener('click', () => {
             document.getElementById("spinner").style.display = 'block';
             fetch(`${window.location.origin}/funding/live-trofi-tokens/`)
+                .then(response => response.json())
+                .then(data => window.location.reload())
+        });
+        document.getElementById('getDevTokens').addEventListener('click', () => {
+            document.getElementById("spinner").style.display = 'block';
+            fetch(`${window.location.origin}/funding/dev-trofi-tokens/`)
+                .then(response => response.json())
+                .then(data => window.location.reload())
+        });
+        document.getElementById('getStagingTokens').addEventListener('click', () => {
+            document.getElementById("spinner").style.display = 'block';
+            fetch(`${window.location.origin}/funding/staging-trofi-tokens/`)
                 .then(response => response.json())
                 .then(data => window.location.reload())
         });

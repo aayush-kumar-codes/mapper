@@ -4,8 +4,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils.timezone import get_current_timezone
 import pytz
 
-from funding.views import GetTrofiToken, GetTrofiTokenDev, GetTrofiTokenStaging
-from .models import FundingBase, Future ,CRON
+from funding.views import GetTrofiToken
+from funding_dev.views import GetTrofiTokenDev
+from funding_staging.views import GetTrofiTokenStaging
+from funding.models import FundingBase, Future ,CRON
 from uuid import uuid4
 from datetime import datetime, timedelta
 

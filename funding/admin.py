@@ -81,4 +81,3 @@ class TrofiTokensAdmin(admin.ModelAdmin):
 
 admin.site.register(FundingRecord, DataPointsAdmin)
 admin.site.register(TrofiTokens, TrofiTokensAdmin)
-

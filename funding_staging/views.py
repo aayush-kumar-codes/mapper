@@ -1,33 +1,19 @@
+import requests
 from uuid import uuid4
-import ccxt, requests
+
 from django.conf import settings
 from django.http import JsonResponse
-from .models import FundingBase
 import pandas as pd
+
 from .models import TrofiTokens
 
 
-# def GetFunding(request):
-#     ftx = ccxt.ftx()
-#     funding = ftx.publicGetFundingRates()
-#     result = funding['result']
-#     results = []
-
-#     try:
-#         results = [FundingBase(future=item['future'].replace("-PERP", ""), rate=item['rate'], time=item['time']) for item in result]
-#     except Exception as error:
-#         print(error)
-#         pass
-
-#     FundingBase.objects.bulk_create(results)    
-
-#     return JsonResponse({})
-
-def GetTrofiToken(request=None):
+# Create your views here.
+def GetTrofiTokenStaging(request=None):
     response = requests.get(
-            url=settings.TROFI_URL,
+            url=settings.TROFI_STAGING_URL,
             headers={
-                "trofi-secret": settings.TROFI_SECRET
+                "trofi-secret": settings.TROFI_STAGING_SECRET
             }
         )
 
@@ -41,12 +27,11 @@ def GetTrofiToken(request=None):
     for token in tokens_list:
         trofi_token = TrofiTokens.objects.filter(symbol=token[1])
         if trofi_token.exists():
-            trofi_token_instance = trofi_token[0]
-            trofi_token_instance.apy = token[0]
-            trofi_token_instance.is_active = token[2]
-            trofi_token_instance.token_id = token[3]
-            trofi_token_instance.priority = token[4] if str(token[4]) != "nan" else ''
-            trofi_token_instance.save()
+            trofi_token[0].apy = token[0]
+            trofi_token[0].is_active = token[2]
+            trofi_token[0].token_id = token[3]
+            trofi_token[0].priority = token[4] if str(token[4]) != "nan" else ''
+            trofi_token[0].save()
         else:
             trofi_token_list.append(
                 TrofiTokens(
