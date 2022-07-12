@@ -27,11 +27,12 @@ def GetTrofiTokenDev(request=None):
     for token in tokens_list:
         trofi_token = TrofiTokens.objects.filter(symbol=token[1])
         if trofi_token.exists():
-            trofi_token[0].apy = token[0]
-            trofi_token[0].is_active = token[2]
-            trofi_token[0].token_id = token[3]
-            trofi_token[0].priority = token[4] if str(token[4]) != "nan" else ''
-            trofi_token[0].save()
+            trofi_token_instance = trofi_token[0]
+            trofi_token_instance.apy = token[0]
+            trofi_token_instance.is_active = token[2]
+            trofi_token_instance.token_id = token[3]
+            trofi_token_instance.priority = token[4] if str(token[4]) != "nan" else ''
+            trofi_token_instance.save()
         else:
             trofi_token_list.append(
                 TrofiTokens(
