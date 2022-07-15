@@ -33,6 +33,12 @@ class CurrencySettings(models.Model):
         return self.currency
 
 
+class OptionsFixingPrice(CurrencySettings):
+    class Meta:
+        verbose_name_plural = 'Options Fixing Price'
+        proxy = True
+
+
 @receiver(signal=post_save, sender=User)
 def save_notification(sender, created, instance, **kwargs):
     """
