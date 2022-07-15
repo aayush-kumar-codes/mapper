@@ -66,6 +66,11 @@ JAZZMIN_SETTINGS = {
             "name": "Funding Table", 
             "url": "/admin/funding/fundingrecord/data-points/", 
             "icon": "nav-icon fas fa-circle",
+        }],
+        "map_to_db": [{
+            "name": "Options Fixing Price", 
+            "url": "/admin/map_to_db/optionsfixingprice/options-fixing-price/", 
+            "icon": "nav-icon fas fa-circle",
         }]
     },
 }
@@ -124,6 +129,7 @@ DATABASES = {
 TROFI_URL=os.getenv('TROFI_URL')
 TROFI_SECRET=os.getenv('TROFI_SECRET')
 TROFI_DEV_URL=os.getenv('TROFI_DEV_URL')
+TROFI_PRICE_URL=os.getenv('TROFI_PRICE_URL')
 TROFI_DEV_SECRET=os.getenv('TROFI_DEV_SECRET')
 TROFI_STAGING_URL=os.getenv('TROFI_STAGING_URL')
 TROFI_STAGING_SECRET=os.getenv('TROFI_STAGING_SECRET')
