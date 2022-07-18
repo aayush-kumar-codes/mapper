@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
-import requests
+from datetime import datetime, timedelta, timezone
+import requests, pytz
 
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -9,37 +9,48 @@ from django.shortcuts import render
 
 from .models import CurrencySettings, OptionsFixingPrice
 
+utc=pytz.UTC
 
-day_0 = str(datetime.now().date())
-day_1 = str(datetime.now().date() - timedelta(days=1))
-day_2 = str(datetime.now().date() - timedelta(days=2))
-day_3 = str(datetime.now().date() - timedelta(days=3))
-day_4 = str(datetime.now().date() - timedelta(days=4))
-day_5 = str(datetime.now().date() - timedelta(days=5))
-day_6 = str(datetime.now().date() - timedelta(days=6))
-day_7 = str(datetime.now().date() - timedelta(days=7))
-day_8 = str(datetime.now().date() - timedelta(days=8))
-day_9 = str(datetime.now().date() - timedelta(days=9))
-day_10 = str(datetime.now().date() - timedelta(days=10))
-day_11 = str(datetime.now().date() - timedelta(days=11))
-day_12 = str(datetime.now().date() - timedelta(days=12))
-day_13 = str(datetime.now().date() - timedelta(days=13))
-day_14 = str(datetime.now().date() - timedelta(days=14))
-day_15 = str(datetime.now().date() - timedelta(days=15))
-day_16 = str(datetime.now().date() - timedelta(days=16))
-day_17 = str(datetime.now().date() - timedelta(days=17))
-day_18 = str(datetime.now().date() - timedelta(days=18))
-day_19 = str(datetime.now().date() - timedelta(days=19))
-day_20 = str(datetime.now().date() - timedelta(days=20))
-day_21 = str(datetime.now().date() - timedelta(days=21))
-day_22 = str(datetime.now().date() - timedelta(days=22))
-day_23 = str(datetime.now().date() - timedelta(days=23))
-day_24 = str(datetime.now().date() - timedelta(days=24))
-day_25 = str(datetime.now().date() - timedelta(days=25))
-day_26 = str(datetime.now().date() - timedelta(days=26))
-day_27 = str(datetime.now().date() - timedelta(days=27))
-day_28 = str(datetime.now().date() - timedelta(days=28))
-day_29 = str(datetime.now().date() - timedelta(days=29))
+time = datetime.utcnow()
+time_obj = datetime.now()
+
+t = datetime(time_obj.year, time_obj.month, time_obj.day, 8, 00, 00, 00, tzinfo=timezone.utc)
+
+if utc.localize(time) < t:
+    start_date = datetime.now().date() - timedelta(days=1)
+else:
+    start_date = datetime.now().date()
+
+day_0 = str(start_date)
+day_1 = str(start_date - timedelta(days=1))
+day_2 = str(start_date - timedelta(days=2))
+day_3 = str(start_date - timedelta(days=3))
+day_4 = str(start_date - timedelta(days=4))
+day_5 = str(start_date - timedelta(days=5))
+day_6 = str(start_date - timedelta(days=6))
+day_7 = str(start_date - timedelta(days=7))
+day_8 = str(start_date - timedelta(days=8))
+day_9 = str(start_date - timedelta(days=9))
+day_10 = str(start_date - timedelta(days=10))
+day_11 = str(start_date - timedelta(days=11))
+day_12 = str(start_date - timedelta(days=12))
+day_13 = str(start_date - timedelta(days=13))
+day_14 = str(start_date - timedelta(days=14))
+day_15 = str(start_date - timedelta(days=15))
+day_16 = str(start_date - timedelta(days=16))
+day_17 = str(start_date - timedelta(days=17))
+day_18 = str(start_date - timedelta(days=18))
+day_19 = str(start_date - timedelta(days=19))
+day_20 = str(start_date - timedelta(days=20))
+day_21 = str(start_date - timedelta(days=21))
+day_22 = str(start_date - timedelta(days=22))
+day_23 = str(start_date - timedelta(days=23))
+day_24 = str(start_date - timedelta(days=24))
+day_25 = str(start_date - timedelta(days=25))
+day_26 = str(start_date - timedelta(days=26))
+day_27 = str(start_date - timedelta(days=27))
+day_28 = str(start_date - timedelta(days=28))
+day_29 = str(start_date - timedelta(days=29))
 
 
 choices = [
@@ -74,11 +85,10 @@ choices = [
             {"name": day_28, "display": day_28},
             {"name": day_29, "display": day_29},
 ]
+    
+            
+class OptionsFixingPriceAdmin(admin.ModelAdmin):
 
-
-
-
-class CurrencySettingsAdmin(admin.ModelAdmin):
     list_display = [
         'currency', 
         'depo', 
@@ -90,11 +100,6 @@ class CurrencySettingsAdmin(admin.ModelAdmin):
         'rounding'
     ]
     list_filter = ['currency']
-            
-
-class OptionsFixingPriceAdmin(admin.ModelAdmin):
-
-    list_display = ['currency']
 
     def get_urls(self):
         urls = super().get_urls()
@@ -105,8 +110,8 @@ class OptionsFixingPriceAdmin(admin.ModelAdmin):
         currencies = CurrencySettings.objects.values_list("currency")
         fixes_list = []
         date = request.GET.get('date', None)
-        if not date:
-            date = str(datetime.now().date())
+        if date is None and utc.localize(time) < t:
+            date = datetime.now().date() - timedelta(days=1)
         for currency in currencies:
             response = requests.get(url=f'{settings.TROFI_PRICE_URL}/?date={date}&currency={currency[0]}')
             if response.status_code == 200:
@@ -117,6 +122,5 @@ class OptionsFixingPriceAdmin(admin.ModelAdmin):
         return render(request=request, template_name='admin/map_to_db/optionsfixingprice/options-fixes-price.html', context={"fixes": fixes_list, "choices": choices, "title": "Date Filter"})
 
 # registering models
-admin.site.register(CurrencySettings, CurrencySettingsAdmin)
 admin.site.register(OptionsFixingPrice, OptionsFixingPriceAdmin)
 admin.site.unregister(Group)

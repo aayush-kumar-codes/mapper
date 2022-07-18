@@ -12,7 +12,7 @@ class CurrencySettings(models.Model):
         verbose_name = 'Options Setting'
         verbose_name_plural = 'Options Setting'
 
-    currency = models.CharField(max_length=10, primary_key=True)
+    currency = models.CharField(max_length=10, primary_key=True, verbose_name="Currency")
     depo = models.FloatField(null=True, blank=True)
     vol_offset = models.FloatField(null=True, blank=True)
     ftx_feed_ticker = models.CharField(max_length=50, blank=True)
@@ -35,7 +35,12 @@ class CurrencySettings(models.Model):
 
 class OptionsFixingPrice(CurrencySettings):
     class Meta:
-        verbose_name_plural = 'Options Fixing Price'
+        """
+            Proxy model inheriting from Currency Settings model.
+            It is used to show the Django's default 
+            Options Setting change and custom template for Option Fixing Price.
+        """
+        verbose_name_plural = 'Options Setting'
         proxy = True
 
 
