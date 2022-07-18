@@ -112,6 +112,8 @@ class OptionsFixingPriceAdmin(admin.ModelAdmin):
         date = request.GET.get('date', None)
         if date is None and utc.localize(time) < t:
             date = datetime.now().date() - timedelta(days=1)
+        elif date is None:
+            date = datetime.now().date()
         for currency in currencies:
             response = requests.get(url=f'{settings.TROFI_PRICE_URL}/?date={date}&currency={currency[0]}')
             if response.status_code == 200:
