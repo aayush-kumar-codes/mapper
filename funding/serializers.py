@@ -19,7 +19,7 @@ class DataPointsSerializer(serializers.ModelSerializer):
         try:
             data = {
                 "future": obj.future,
-                "flex": apy[0].apy
+                "flex": "" if (apy[0].apy).is_nan() else apy[0].apy
             }
         except IndexError:
             data = {
