@@ -117,7 +117,9 @@ class OptionsFixingPriceAdmin(admin.ModelAdmin):
         for currency in currencies:
             response = requests.get(url=f'{settings.TROFI_PRICE_URL}/?date={date}&currency={currency[0]}')
             if response.status_code == 200:
-                fixes_list.append({"currency": currency[0], "price": response.json()["data"]["index_price"]})
+                response_json = response.json()
+                if response_json["code"]:
+                    fixes_list.append({"currency": currency[0], "price": response_json["data"]["index_price"]})
             else:
                 fixes_list.append({"currency": currency[0], "price": ""})
 

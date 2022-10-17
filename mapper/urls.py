@@ -8,6 +8,10 @@ from funding_staging.views import GetTrofiTokenStaging
 from .utils import Cronjob
 from django.views.static import serve 
 
+admin.site.site_header = "Trofi Admin"
+admin.site.site_title = "Trofi Admin"
+admin.site.index_title = "Trofi Risk Management Panel"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('funding/live-trofi-tokens/', GetTrofiToken),
